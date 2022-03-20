@@ -34,7 +34,6 @@ public class StudentService {
     
 
     public Optional<StudentGetDto> findById(Long id) {
-
         return repository.findById(id).map(student -> mapper.toDto(student));
     }
 

@@ -8,6 +8,7 @@ import com.studentsapi.persitence.repository.StudentRepository;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -54,6 +55,36 @@ public class ServiceTest {
             //3.Assert
             List<StudentGetDto> sutExpected = new ArrayList();
             assertEquals(sutExpected, finAllStudentRetReturnValue);
+        }
+    }
+    @Nested
+    public class findById {
+        @Test
+        public void when_xx_then_success_repository() throws Exception {
+            Long id = 1L;
+            Student student = new Student();
+            student.setId(id);
+            Optional<Student> findByIdReturnValue = Optional.of(student);
+            when(repositoryMock.findById(1L)).thenReturn(findByIdReturnValue);
+
+            StudentGetDto toDtoReturnValue = new StudentGetDto();
+            toDtoReturnValue.setId(id);
+            when(mapperMock.toDto(new Student())).thenReturn(toDtoReturnValue);
+            assertEquals( toDtoReturnValue.getId() , findByIdReturnValue.get().getId());
+
+        }
+        @Test
+        public void when_xx_then_success_service() throws Exception {
+            Long id = 1L;
+            StudentGetDto toDtoReturnValueService = new StudentGetDto();
+            toDtoReturnValueService.setId(id);
+            Optional<StudentGetDto> findByIdRetReturnValue = Optional.of(toDtoReturnValueService);
+            when(studentService.findById(id)).thenReturn(findByIdRetReturnValue);
+
+            StudentGetDto sutExpectedDTO = new StudentGetDto();
+            sutExpectedDTO.setId(id);
+            Optional<StudentGetDto> sutExpected = Optional.of(sutExpectedDTO);
+            assertEquals(sutExpected.get().getId(), findByIdRetReturnValue.get().getId());
         }
     }
 
